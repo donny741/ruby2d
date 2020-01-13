@@ -26,6 +26,15 @@ module Ruby2D
       end
     end
 
+    # Remove the object from the window
+    def remove_and_free_text
+      return false unless is_a? Ruby2D::Text
+
+      if Module.const_defined? :DSL
+        Window.remove_and_free_text(self)
+      end
+    end
+
     # Set the color value
     def color=(c)
       @color = Color.new(c)

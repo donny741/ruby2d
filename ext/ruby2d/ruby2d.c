@@ -552,6 +552,22 @@ static R_VAL ruby2d_text_ext_render(R_VAL self) {
   return R_NIL;
 }
 
+/*
+ * Ruby2D::Text#free_text
+ */
+#if MRUBY
+static R_VAL ruby2d_text_free_text(mrb_state* mrb, R_VAL self) {
+#else
+static R_VAL ruby2d_text_free_text(R_VAL self) {
+#endif
+  S2D_Text *txt;
+  r_data_get_struct(self, "@data", &text_data_type, S2D_Text, txt);
+
+  free_text(txt);
+
+  return R_NIL;
+}
+
 
 /*
  * Free text structure attached to Ruby 2D `Text` class
@@ -1179,6 +1195,9 @@ void Init_ruby2d() {
 
   // Ruby2D::Text#ext_render
   r_define_method(ruby2d_text_class, "ext_render", ruby2d_text_ext_render, r_args_none);
+  
+  // Ruby2D::Text#ext_render
+  r_define_method(ruby2d_text_class, "free_text", ruby2d_text_free_text, r_args_none);
 
   // Ruby2D::Sound
   R_CLASS ruby2d_sound_class = r_define_class(ruby2d_module, "Sound");

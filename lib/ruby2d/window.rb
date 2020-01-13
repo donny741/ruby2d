@@ -141,6 +141,10 @@ module Ruby2D
         @@window.remove(o)
       end
 
+      def remove_and_free_text(o)
+        @@window.remove_and_free_text(o)
+      end
+
       def clear
         @@window.clear
       end
@@ -234,6 +238,26 @@ module Ruby2D
 
       if i = @objects.index(o)
         @objects.delete_at(i)
+        true
+      else
+        false
+      end
+    end
+
+    # Remove and free text from the window
+    # This method will result in null pointer error
+    # in attempt to access object after it
+    # has been freed
+    def remove_and_free_text(o)
+      if o == nil
+        raise Error, "Cannot remove '#{o.class}' from window!"
+      end
+
+      if i = @objects.index(o)
+        @objects.delete_at(i)
+        if o.is_a? Ruby2D::Text
+          o.free_text
+        end
         true
       else
         false
